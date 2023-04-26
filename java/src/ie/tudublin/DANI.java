@@ -7,7 +7,53 @@ import processing.core.PApplet;
 public class DANI extends PApplet {
 
 	
+	class Follow {
+		private String word;
+		private int count;
+	
+		public Follow(String word, int count) {
+			this.word = word;
+			this.count = count;
+		}
+	
+		public String getWord() {
+			return word;
+		}
 
+		public int getCount() {
+			return count;
+		}
+
+		@Override
+		public String toString() {
+			return "Follow [count=" + count + ", word=" + word + "]";
+		}
+	}
+	
+	class Word {
+		private String word;
+		private ArrayList<Follow> follows;
+	
+		public Word(String word) {
+			this.word = word;
+			this.follows = new ArrayList<>();
+		}
+
+		public String getWord() {
+			return word;
+		}
+
+		public ArrayList<Follow> getFollows() {
+			return follows;
+		}
+
+		@Override
+		public String toString() {
+			return "Word [follows=" + follows + ", word=" + word + "]";
+		}
+	
+	}
+	
 	public void settings() {
 		size(1000, 1000);
 		//fullScreen(SPAN);
