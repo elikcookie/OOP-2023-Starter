@@ -1,16 +1,21 @@
+//C21320836 26/04/2023
 package ie.tudublin;
 
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import java.util.Random;
+
 
 public class DANI extends PApplet {
 
 	private ArrayList<Word> wordsList;
+	private Random random;
 
-	public DANI() {
-		wordsList = new ArrayList<>();
-	}
+    public DANI() {
+        wordsList = new ArrayList<>();
+        random = new Random();
+    }
 
 	class Word {
 		private String word;
@@ -75,32 +80,44 @@ public class DANI extends PApplet {
 
 	void loadFile() {
 		String[] lines = loadStrings("small.txt");
-
+	
 		for (String line : lines) {
 			String[] words = split(line, ' ');
-
-			for (int i = 0; i < words.length - 1; i++) {
+	
+			for (int i = 0; i < words.length; i++) {
 				String word = words[i].replaceAll("[^\\w\\s]", "").toLowerCase();
-				String next = words[i + 1].replaceAll("[^\\w\\s]", "").toLowerCase();
-
-				Word wd = findWord(word);
-
-				if (wd == null) {
-					wd = new Word(word);
-					wordsList.add(wd);
-				}
-
-				Follow f = wd.findFollow(next);
-
-				if (f == null) {
-					f = new Follow(next, 1);
-					wd.getFollows().add(f);
+	
+				if (i < words.length - 1) {
+					String next = words[i + 1].replaceAll("[^\\w\\s]", "").toLowerCase();
+	
+					Word wd = findWord(word);
+	
+					if (wd == null) {
+						wd = new Word(word);
+						wordsList.add(wd);
+					}
+	
+					Follow f = wd.findFollow(next);
+	
+					if (f == null) {
+						f = new Follow(next, 1);
+						wd.getFollows().add(f);
+					} else {
+						f.count += 1;
+					}
 				} else {
-					f.count += 1;
+					// If it is the last word in the line, check if it exists in wordsList
+					// If not, add it with an empty follows list
+					Word wd = findWord(word);
+					if (wd == null) {
+						wd = new Word(word);
+						wordsList.add(wd);
+					}
 				}
 			}
 		}
 	}
+	
 
 	// finds a word in the model so you can check if it already exists, returns null
 	// if no match
@@ -123,31 +140,43 @@ public class DANI extends PApplet {
 		size(1000, 1000);
 		// fullScreen(SPAN);
 	}
+    String[] sonnet;
 
-	String[] sonnet;
+    public void writeSonnet() {
+        sonnet = new String[14];
 
-	public String[] writeSonnet() {
-		// pick random word
+        for (int i = 0; i < 14; i++) {
+            StringBuilder line = new StringBuilder();
 
-		// if it has no follow word use it
-		// otherwise pick a follow word at random and use it
-		// repeat 8 times
-		// Print the Sonnet to the console
-		// Print the Sonnet to the screen.
-		// Add code to generate a new sonnet on keyPress
-		return null;
-	}
+            Word currentWord = wordsList.get(random.nextInt(wordsList.size()));
+            for (int j = 0; j < 8; j++) {
+                line.append(currentWord.getWord()).append(" ");
+
+                ArrayList<Follow> follows = currentWord.getFollows();
+                if (follows.isEmpty()) {
+                    break;
+                }
+
+                Follow follow = follows.get(random.nextInt(follows.size()));
+                currentWord = findWord(follow.getWord());
+            }
+
+            sonnet[i] = line.toString();
+            System.out.println(sonnet[i]);
+        }
+    }
 
 	public void setup() {
 		colorMode(HSB);
 		loadFile();
-		// writeSonnet();
+		writeSonnet();
 
 	}
 
 	public void keyPressed() {
 		if (keyCode == ' ') {
-			// writeSonnet();
+			writeSonnet();
+			redraw();
 		}
 	}
 
@@ -159,6 +188,12 @@ public class DANI extends PApplet {
 		noStroke();
 		textSize(20);
 		textAlign(CENTER, CENTER);
+
+		if (sonnet != null) {
+            for (int i = 0; i < sonnet.length; i++) {
+                text(sonnet[i], width / 2, (i + 1) * 40);
+            }
+        }
 
 	}
 
