@@ -3001,3 +3001,17 @@ including how to make donations to the Project Gutenberg Literary
 Archive Foundation, how to help produce our new eBooks, and how to
 subscribe to our email newsletter to hear about new eBooks.
 
+Loading & printing the model:
+In the DANI.java file, implement the loadFile() method as outlined in the instructions, using the provided functions. Implement the findWord() and findFollow() methods in their respective classes.
+
+Generating a sonnet:
+In the DANI.java file, implement the writeSonnet() method. Use a loop to generate 14 lines, and for each line, use another loop to generate 8 words (or less if no follow word is available). To pick a random word, you can use java.util.Random.
+
+Printing the sonnet:
+Print the generated sonnet to the console and the Processing window. For the latter, you can use the text() function provided by Processing.
+
+Generating a new sonnet on keyPress:
+Override the keyPressed() function in DANI.java to call writeSonnet() when a specific key (e.g., SPACE) is pressed.
+
+Commit your changes regularly:
+Use Git to make at least five commits while working on the project. Remember to provide meaningful commit messages.
