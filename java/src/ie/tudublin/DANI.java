@@ -6,16 +6,15 @@ import java.util.ArrayList;
 import processing.core.PApplet;
 import java.util.Random;
 
-
 public class DANI extends PApplet {
 
 	private ArrayList<Word> wordsList;
 	private Random random;
 
-    public DANI() {
-        wordsList = new ArrayList<>();
-        random = new Random();
-    }
+	public DANI() {
+		wordsList = new ArrayList<>();
+		random = new Random();
+	}
 
 	class Word {
 		private String word;
@@ -80,25 +79,25 @@ public class DANI extends PApplet {
 
 	void loadFile() {
 		String[] lines = loadStrings("shakespere.txt");
-	
+
 		for (String line : lines) {
 			String[] words = split(line, ' ');
-	
+
 			for (int i = 0; i < words.length; i++) {
 				String word = words[i].replaceAll("[^\\w\\s]", "").toLowerCase();
-	
+
 				if (i < words.length - 1) {
 					String next = words[i + 1].replaceAll("[^\\w\\s]", "").toLowerCase();
-	
+
 					Word wd = findWord(word);
-	
+
 					if (wd == null) {
 						wd = new Word(word);
 						wordsList.add(wd);
 					}
-	
+
 					Follow f = wd.findFollow(next);
-	
+
 					if (f == null) {
 						f = new Follow(next, 1);
 						wd.getFollows().add(f);
@@ -117,7 +116,6 @@ public class DANI extends PApplet {
 			}
 		}
 	}
-	
 
 	// finds a word in the model so you can check if it already exists, returns null
 	// if no match
@@ -140,31 +138,32 @@ public class DANI extends PApplet {
 		size(1000, 1000);
 		// fullScreen(SPAN);
 	}
-    String[] sonnet;
 
-    public void writeSonnet() {
-        sonnet = new String[14];
+	String[] sonnet;
 
-        for (int i = 0; i < 14; i++) {
-            StringBuilder line = new StringBuilder();
+	public void writeSonnet() {
+		sonnet = new String[14];
 
-            Word currentWord = wordsList.get(random.nextInt(wordsList.size()));
-            for (int j = 0; j < 8; j++) {
-                line.append(currentWord.getWord()).append(" ");
+		for (int i = 0; i < 14; i++) {
+			StringBuilder line = new StringBuilder();
 
-                ArrayList<Follow> follows = currentWord.getFollows();
-                if (follows.isEmpty()) {
-                    break;
-                }
+			Word currentWord = wordsList.get(random.nextInt(wordsList.size()));
+			for (int j = 0; j < 8; j++) {
+				line.append(currentWord.getWord()).append(" ");
 
-                Follow follow = follows.get(random.nextInt(follows.size()));
-                currentWord = findWord(follow.getWord());
-            }
+				ArrayList<Follow> follows = currentWord.getFollows();
+				if (follows.isEmpty()) {
+					break;
+				}
 
-            sonnet[i] = line.toString();
-            System.out.println(sonnet[i]);
-        }
-    }
+				Follow follow = follows.get(random.nextInt(follows.size()));
+				currentWord = findWord(follow.getWord());
+			}
+
+			sonnet[i] = line.toString();
+			System.out.println(sonnet[i]);
+		}
+	}
 
 	public void setup() {
 		colorMode(HSB);
@@ -190,10 +189,10 @@ public class DANI extends PApplet {
 		textAlign(CENTER, CENTER);
 
 		if (sonnet != null) {
-            for (int i = 0; i < sonnet.length; i++) {
-                text(sonnet[i], width / 2, (i + 1) * 40);
-            }
-        }
+			for (int i = 0; i < sonnet.length; i++) {
+				text(sonnet[i], width / 2, (i + 1) * 40);
+			}
+		}
 
 	}
 
