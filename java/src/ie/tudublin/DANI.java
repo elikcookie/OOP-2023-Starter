@@ -79,7 +79,7 @@ public class DANI extends PApplet {
 	}
 
 	void loadFile() {
-		String[] lines = loadStrings("small.txt");
+		String[] lines = loadStrings("shakespere.txt");
 	
 		for (String line : lines) {
 			String[] words = split(line, ' ');
